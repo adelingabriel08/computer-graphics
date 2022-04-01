@@ -1,5 +1,6 @@
 package cg.bouncysquare;
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.renderscript.ScriptIntrinsicYuvToRGB;
 
@@ -10,9 +11,12 @@ import javax.microedition.khronos.opengles.GL11;
 public class SquareRenderer implements GLSurfaceView.Renderer{
     private Square mSquare1;
     private Square mSquare2;
+    private Context context;
     private float mTransY;
 
-    public SquareRenderer() {
+    public SquareRenderer(Context context)
+    {
+        this.context = context;
         float[] squareColorsYMCA =
                 {
                         1.0f, 1.0f, 0.0f, 1.0f,
@@ -39,6 +43,10 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
         gl.glEnable(GL10.GL_CULL_FACE);
         gl.glShadeModel(GL10.GL_SMOOTH);
         gl.glEnable(GL10.GL_DEPTH_TEST);
+        int resid = R.drawable.dog;
+        mSquare1.createTexture(gl, this.context, resid);
+        mSquare2.createTexture(gl, this.context, resid);
+
     }
 
     @Override
@@ -60,8 +68,8 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
         gl.glLoadIdentity();
         gl.glTranslatef(0.0f,(float)Math.sin(mTransY), -3.0f);
 //        gl.glColor4f(0.0f,0.0f,1.0f,0.5f);
-//        gl.glEnable(GL10.GL_BLEND);
-////        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 //        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 //        gl.glColorMask(true, false, true, true);
         mSquare1.draw(gl);
