@@ -44,8 +44,9 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
         gl.glShadeModel(GL10.GL_SMOOTH);
         gl.glEnable(GL10.GL_DEPTH_TEST);
         int resid = R.drawable.dog;
+        int resId2 = R.drawable.texture2;
         mSquare1.createTexture(gl, this.context, resid);
-        mSquare2.createTexture(gl, this.context, resid);
+        mSquare2.createTexture(gl, this.context, resId2);
 
     }
 
