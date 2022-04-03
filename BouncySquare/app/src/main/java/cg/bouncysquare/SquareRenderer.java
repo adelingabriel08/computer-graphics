@@ -44,9 +44,11 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
         gl.glShadeModel(GL10.GL_SMOOTH);
         gl.glEnable(GL10.GL_DEPTH_TEST);
         int resid = R.drawable.dog;
-        int resId2 = R.drawable.texture2;
-        mSquare1.createTexture(gl, this.context, resid);
-        mSquare2.createTexture(gl, this.context, resId2);
+        int resId2 = R.drawable.texture1;
+        mSquare1.setTextures(gl,this.context, resid, resId2);
+//        mSquare1.createTexture(gl, this.context, resid);
+
+//        mSquare2.createTexture(gl, this.context, resId2);
 
     }
 
@@ -69,16 +71,16 @@ public class SquareRenderer implements GLSurfaceView.Renderer{
         gl.glLoadIdentity();
         gl.glTranslatef(0.0f,(float)Math.sin(mTransY), -3.0f);
 //        gl.glColor4f(0.0f,0.0f,1.0f,0.5f);
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
+//        gl.glEnable(GL10.GL_BLEND);
+//        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 //        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 //        gl.glColorMask(true, false, true, true);
         mSquare1.draw(gl);
-
-        gl.glLoadIdentity();
-        gl.glTranslatef((float)(Math.sin(mTransY)/2.0f),0.0f, -2.9f);
-//        gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-        mSquare2.draw(gl);
+//
+//        gl.glLoadIdentity();
+//        gl.glTranslatef((float)(Math.sin(mTransY)/2.0f),0.0f, -2.9f);
+////        gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+//        mSquare2.draw(gl);
         mTransY += .075f;
     }
 

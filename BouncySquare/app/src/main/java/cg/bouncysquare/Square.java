@@ -50,6 +50,8 @@ public class Square {
     private ByteBuffer mIndexBuffer;
     private int[] textures = new int[1];
     public FloatBuffer mTextureBuffer;
+    private int mTexture0;
+    private int mTexture1;
 
     public void draw(GL10 gl) {
         gl.glFrontFace(GL11.GL_CW);
@@ -59,12 +61,35 @@ public class Square {
         gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, mColorBuffer);
         gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
         gl.glEnable(GL10.GL_TEXTURE_2D);
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+//        gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, mTexture0);
         gl.glTexCoordPointer(2, GL10.GL_FLOAT,0, mTextureBuffer);
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        gl.glClientActiveTexture(GL10.GL_TEXTURE0);
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
+        gl.glClientActiveTexture(GL10.GL_TEXTURE1);
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
+        multiTexture(gl,mTexture0,mTexture1);
+
+
+//        gl.glEnable(GL10.GL_TEXTURE_2D);
+//        gl.glBindTexture(GL10.GL_TEXTURE_2D, mTexture0);
+//        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+//        gl.glFrontFace(GL11.GL_CW);
+//        gl.glVertexPointer(2, GL11.GL_FLOAT, 0, mFVertexBuffer);
+//        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+//        gl.glColorPointer(4, GL11.GL_UNSIGNED_BYTE, 0, mColorBuffer);
+//        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+//        gl.glClientActiveTexture(GL10.GL_TEXTURE0);
+//        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
+//        gl.glClientActiveTexture(GL10.GL_TEXTURE1);
+//        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, mTextureBuffer);
+//        multiTexture(gl,mTexture0,mTexture1);
+//        gl.glFrontFace(GL11.GL_CCW);
+
     }
 
-    public void createTexture(GL10 gl, Context contextRegf, int resource)
+    public int createTexture(GL10 gl, Context contextRegf, int resource)
     {
         Bitmap image = BitmapFactory.decodeResource(contextRegf.getResources(), resource);
         gl.glGenTextures(1, textures, 0);
@@ -73,5 +98,23 @@ public class Square {
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
         image.recycle();
+        return textures[0];
+    }
+
+    public void multiTexture(GL10 gl, int tex0, int tex1)
+    {
+        float combineParameter = GL10.GL_MODULATE;
+        gl.glActiveTexture(GL10.GL_TEXTURE0);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, tex0);
+        gl.glActiveTexture(GL10.GL_TEXTURE1);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, tex1);
+        gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, combineParameter);
+
+    }
+
+    public void setTextures(GL10 gl, Context context, int resourceID0, int resourceID1)
+    {
+        mTexture0 = createTexture(gl,context,resourceID0);
+        mTexture1 = createTexture(gl,context,resourceID1);
     }
 }
